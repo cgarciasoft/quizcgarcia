@@ -13,7 +13,13 @@ exports.load = function(req, res, next, quizId) {
  
 // GET /quizes
 exports.index = function(req, res) {
-	models.Quiz.findAll().then(
+	var searchToken = "%";
+	if(req.query.search != undefined)
+	{
+		searchToken = "%"+ req.query.search.trim().replace(/\s/g,"%") + "%";
+	}
+	
+	models.Quiz.findAll({where:["upper(pregunta) like ?", searchToken.toUpperCase()]}).then(
 		function(quizes) {
 			res.render('quizes/index.ejs', { quizes: quizes});
 		}
