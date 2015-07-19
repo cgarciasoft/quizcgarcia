@@ -3,4 +3,5 @@ node_modules
 npm-debug.log
 package.sublime-workspace
 quiz,sqlite
+quiz.sqlite
 .env
