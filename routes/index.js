@@ -12,6 +12,9 @@ router.get('/author', function(req, res) {
   res.render('author', {author: ' Carlos Garcia Cruz'});
 });
 
+//Autoload de comandos con :quizId
+router.param('quizId', quizController.load);
+
 //Definicion de rutas /quizes/answer
 router.get('/quizes', 						quizController.index);
 router.get('/quizes/:quizId(\\d+)', 		quizController.show);
