@@ -40,3 +40,27 @@ exports.answer = function(req, res) {
 	res.render('quizes/answer', {  quiz: req.quiz, respuesta: resultado});
 
 };
+
+//GET /quizes/new
+exports.new = function(req, res) {
+	var quiz = models.Quiz.build(
+	{pregunta: "Pregunta", respuesta: "Respuesta"}
+	);
+	
+	res.render('quizes/new', {quiz: quiz});
+
+};
+
+//GET /quizes/create
+exports.create = function(req, res) {
+	var quiz = models.Quiz.build( req.body.quiz );
+
+	//guardar en DB
+	quiz.save({fields: ["pregunta","respuesta"]}).then(function(){
+		res.redirect('/quizes');
+	})
+	.catch(function(error) {
+    // Ooops, do some error-handling
+	
+	})	
+};
