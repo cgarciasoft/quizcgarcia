@@ -22,7 +22,7 @@ app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
-app.use(cookieParser('Quiz 2015'));
+app.use(cookieParser('cgsoft-Quiz 2015'));
 app.use(session());
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -35,6 +35,15 @@ app.use(function(req, res, next) {
     req.session.redir = req.path;
   }
 
+  //auto-logout
+  var maxSessionTime = 120000;
+  var actualTime = Date.now();
+  if(req.session.lastConn && actualTime - req.session.lastConn > maxSessionTime)
+  {
+    delete req.session.user;
+  }
+  req.session.lastConn = actualTime;
+ 
   // Hacer visible req.session en las vistas
   res.locals.session = req.session;
   next();
