@@ -1,7 +1,10 @@
 var models = require('../models/models.js');
 
 exports.load = function(req, res, next, quizId) {
-	models.Quiz.findById(quizId).then(
+	models.Quiz.find({
+		where: {id: Number(quizId)},
+		include: [{model: models.Comment}]
+	}).then(
 		function(quiz) {
 			if(quiz) {
 				req.quiz = quiz;
@@ -19,7 +22,7 @@ exports.index = function(req, res) {
 		searchToken = "%"+ req.query.search.trim().replace(/\s/g,"%") + "%";
 	}
 	
-	models.Quiz.findAll({where:["upper(pregunta) like ?", searchToken.toUpperCase()]}).then(
+	models.Quiz.findAll({where:["upper(pregunta) like ?", searchToken.toUpperCase()], include: [{model: models.Comment}]}).then(
 		function(quizes) {
 			res.render('quizes/index.ejs', { quizes: quizes, errors: []});
 		}
